@@ -1,29 +1,38 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
+import React from "react";
+import ReactDOM from "react-dom";
+import { Provider } from "react-redux";
+import store from "./store";
+import { times } from "lodash";
 
-import Hello from './components/hello';
+const items = times(1000, i => ({ id: i, label: i, checked: false }));
 
-import Clock from './containers/clock';
-import Search from './containers/autosuggest';
-import Weather from './components/weather';
+console.log(items);
 
+class App extends React.Component {
+  handleClick = id => {};
 
-import store from './store';
-
-const component = (
-  <div className="network">
-    <div className="greeter">
-      <Hello name="Marty" />
-      <Clock />
-    </div>
-    <Weather />
-  </div>
-);
+  render() {
+    return (
+      <ul>
+        {items.map(item => {
+          return (
+            <li
+              key={item.id}
+              style={{ backgroundColor: item.checked ? "blue" : null }}
+              onClick={e => this.handleClick(item.id)}
+            >
+              {item.label}{" "}
+            </li>
+          );
+        })}
+      </ul>
+    );
+  }
+}
 
 ReactDOM.render(
   <Provider store={store}>
-    {component}
+    <App />
   </Provider>,
-  document.getElementById('container'),
+  document.getElementById("container")
 );
